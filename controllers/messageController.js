@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const moment = require('moment');
 
 require('../models/message');
 require('../models/user');
@@ -7,10 +8,10 @@ const Message = mongoose.model("messages");
 const User = mongoose.model("users");
 
 let controller = {
-    saveMessage: async (req, res) => {
+    saveRoomMessage: async (req, res) => {
         var sender = req.decoded._id;
         const { text, receiver, roomName } = req.body;
-        const createdAt = new Date().getDate();
+        const createdAt =moment().valueOf();
 
         const message = new Message({
             text, sender, receiver, roomName, createdAt
@@ -35,8 +36,7 @@ let controller = {
         const user = await User.findById(userId);
         if (user) {
             //TODO permissions
-            const roomName = req.query.roomName;
-            console.log("roomName", roomName);
+            const roomName = req.query.roomName;        
             const messages = await Message.find({ roomName });
 
             res.status(200).send(messages);

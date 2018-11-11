@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const moment = require('moment');
 
 
 require('../models/room');
@@ -14,9 +14,9 @@ const User = mongoose.model("users");
 let controller = {
     createRoom: (req, res) => {
         //get admin from cookie
-        console.log("createRoom");
+     
         const { roomName, admin } = req.body;
-        const createDate = new Date().getDate();
+        const createDate = moment().valueOf();
         const permissions = [], postsID = [], messagesID = [], loggedUsers = [];
         const room = new Room({
             _id: new mongoose.Types.ObjectId(),
@@ -29,7 +29,7 @@ let controller = {
             messagesID
         });
         room.save().then(function (result) {
-            console.log(result);
+        
             res.status(200).json({
                 success: 'New room has been created'
             });

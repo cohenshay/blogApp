@@ -13,8 +13,7 @@ function jwtAuthenticator(req, res, next) {
         next();
         return null;
     }
-    var token = req.headers.authorization;
-    console.log("token", token)
+    var token = req.headers.authorization;  
 
     // decode token
     if (token) {

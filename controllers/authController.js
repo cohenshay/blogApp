@@ -30,8 +30,7 @@ let controller = {
                     username,
                     password: hash
                 });
-                user.save().then(function (result) {
-                    console.log(result);
+                user.save().then(function (result) {             
                     res.status(200).json({
                         success: 'New user has been created'
                     });
@@ -59,7 +58,8 @@ let controller = {
                         res.cookie('jwt',JWTToken);
                         return res.status(200).json({
                             success: 'success',
-                            token: JWTToken
+                            token: JWTToken,
+                            user
                         });
                     }
                     return res.status(401).json({

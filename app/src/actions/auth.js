@@ -4,20 +4,33 @@ import axios from 'axios';
 
 export const signin = (params) => {
   let data = {
-    fname: "shay",
-    lname: "cohen",
-    address: "hakesem 6 herzeliya",
-    email: "cohenshay85@gmail.com",
-    username: "cohenshay",
-    password: "1234"
+    email: params.email,
+    password: params.password
   };
 
   return function (dispatch) {
     axios.post(`http://localhost:5000/auth/signin`, data)
-      .then((response) => dispatch({
-        type: 'LOGIN',
-        uid: response.data.token
-      })).catch((err) => console.log(err))
+      .then((response) => {
+        //set token to local storage so when refreshing the app won't need to login again
+        localStorage.setItem('clientToken', response.data.token);
+        localStorage.setItem('currentUser',JSON.stringify(response.data.user));
+        return dispatch({
+          type: 'LOGIN',
+          uid: response.data.token,
+          currentUser: response.data.user
+        })
+      }).catch((err) => console.log(err))
+  }
+}
+
+export const logout = () => {  
+  localStorage.removeItem('clientToken');
+  localStorage.removeItem('currentUser');
+  window.location.href=process.env.SITE_URL
+  return function (dispatch) {  
+    return dispatch({
+      type: 'LOGOUT'    
+    })
   }
 }
 

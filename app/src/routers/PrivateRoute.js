@@ -21,7 +21,7 @@ export const PrivateRoute = ({
   );
 
 const mapStateToProps = (state) => ({
-  isAuthenticated: !!state.auth.uid
+  isAuthenticated: !!state.auth.uid || !!localStorage.getItem('clientToken') 
 });
 
 export default connect(mapStateToProps)(PrivateRoute);
